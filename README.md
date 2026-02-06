@@ -7,11 +7,12 @@ file from inside `nvim`.
 To configure using [Lazy.nvim](https://github.com/folke/lazy.nvim), add this to `plugins.lua`:
 
     {
-      "statusfailed/nvim-metacat",
+      "statusfailed/metacat.nvim",
       opts = {
         viewer = { "feh", "--reload", "1" },
       },
     },
+
 
 You can then bind the `render` method to a key, e.g. F6 by adding the following to `init.lua`:
 
