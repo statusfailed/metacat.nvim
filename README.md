@@ -1,4 +1,4 @@
-# nvim-metacat
+# metacat.nvim
 
 Render diagrams from a
 [metacat](https://github.com/statusfailed/metacat).
