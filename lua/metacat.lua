@@ -18,7 +18,19 @@ local function find_def_arrow()
   local row = vim.api.nvim_win_get_cursor(0)[1]
   for i = row, 1, -1 do
     local line = vim.api.nvim_buf_get_lines(0, i - 1, i, false)[1]
-    local name = line:match("%(def%-arrow%s+(%S+)")
+    local name = line:match("%(def%s+(%S+)")
+    if name then
+      return name
+    end
+  end
+  return nil
+end
+
+local function find_theory_name()
+  local row = vim.api.nvim_win_get_cursor(0)[1]
+  for i = row, 1, -1 do
+    local line = vim.api.nvim_buf_get_lines(0, i - 1, i, false)[1]
+    local name = line:match("%(theory%s+(%S+)")
     if name then
       return name
     end
@@ -36,7 +48,13 @@ function M.render()
 
   local name = find_def_arrow()
   if not name then
-    vim.notify("metacat: no (def-arrow ...) found above cursor", vim.log.levels.WARN)
+    vim.notify("metacat: no (def ...) found above cursor", vim.log.levels.WARN)
+    return
+  end
+
+  local theory = find_theory_name()
+  if not theory then
+    vim.notify("metacat: no enclosing (theory ...) found above cursor", vim.log.levels.WARN)
     return
   end
 
@@ -47,7 +65,7 @@ function M.render()
   local bufpath = vim.api.nvim_buf_get_name(0)
   local stdout_chunks = {}
   local stderr_chunks = {}
-  vim.fn.jobstart({ "metacat", "arrow", "svg", bufpath, name, "--orientation", "tb" }, {
+  vim.fn.jobstart({ "metacat", "arrow", "svg", theory, name, bufpath, "--orientation", "tb" }, {
     stdout_buffered = true,
     stderr_buffered = true,
     on_stdout = function(_, data)

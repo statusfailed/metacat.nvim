@@ -16,7 +16,16 @@ To configure using [Lazy.nvim](https://github.com/folke/lazy.nvim), add this to 
 
 Then bind the `render` method to a key (e.g. F6 below) by adding the following to `init.lua`:
 
-    vim.keymap.set("n", "<F6>", require("metacat").render, { desc = "Metacat: render def-arrow as SVG" })
+    vim.keymap.set("n", "<F6>", require("metacat").render, { desc = "Metacat: render def as SVG" })
+
+`render()` looks upward from the cursor to find:
+
+- the nearest `(def name : ... = ...)`
+- the enclosing `(theory theory.name syntax { ... })`
+
+and then runs:
+
+    metacat arrow svg <theory-name> <arrow-name> <current-file> --orientation tb
 
 # Configuration
 
